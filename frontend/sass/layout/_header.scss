@@ -1,0 +1,20 @@
+header{
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    height: 100px;
+    border-bottom: 1px solid #ccc;
+    & .logo{
+        padding-top: 1em;
+     }
+    & .cart{
+        color: #000;
+        padding-top: 2.4em;
+    }
+    & .cart a:hover{
+            border-bottom: 2px solid blueviolet ;
+            padding-bottom: 1em;
+        }
+}
+
+
