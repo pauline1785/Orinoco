@@ -16,7 +16,7 @@ fetch("http://localhost:3000/api/teddies")
         for (let i = 0; i < teddies.length; i++) {
             teddie = teddies[i];
             let product = new Product(teddie);
-            document.querySelector(".container").innerHTML += `<div class="product">
+            document.querySelector(".container").innerHTML += `<div class="products">
                                                                     <a href="product/product.html?id=${product._id}" alt="photo d'ours en peluche">
                                                                         <figure>
                                                                             <img src="${product.imageUrl}"/>
