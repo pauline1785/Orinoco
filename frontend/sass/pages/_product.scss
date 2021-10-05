@@ -1,0 +1,53 @@
+
+
+.product{
+    display: flex;
+    padding: 50px 0;
+    &__img{
+        width: 50%;
+        object-fit: cover; /*permet que l'image ne soit pas déformée */
+        border : 1px solid #ccc;
+    }
+    &__infos{
+        padding-left: 100px;
+        & p{
+            padding: 20px 0;
+        }
+        & .note{
+            padding-bottom: 50px;
+        }
+    }
+    & button{
+        border: 1px solid #ccc;
+        color: #fff;
+        background-color: #000;
+        padding: 10px;
+        margin-top: 30px;
+        cursor: pointer;
+    }
+    & h3{
+        font-size: 14px;
+    }
+}
+
+.color-choices ul{
+    display: flex;
+    flex-flow: row wrap;
+    & input[type=radio]{
+        height: 0;
+        width: 0;
+        visibility: hidden;
+    }
+    & label{
+    cursor: pointer;
+    margin: 0 10px;
+    padding: 20px;
+    display:flex;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    }
+    & label:hover{
+        border: 1px solid #000;
+    }
+}
+
