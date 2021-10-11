@@ -8,7 +8,7 @@ fetch("http://localhost:3000/api/teddies")
             let teddies = response.json();
             return teddies;
         }else{
-            console.log("error");
+
         }
 // pour afficher tous les produits sur la page
     }).then(function(teddies) {
