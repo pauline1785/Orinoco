@@ -1,6 +1,6 @@
 /* AFFICHAGE DE LA FICHE PRODUIT DE L ARTICLE CHOISI EN PAGE D ACCUEIL */
 
-//On va chercher l'id dans l'URL
+//Récupération de l'ID du produit dans l'URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const productId= urlParams.get("id");
@@ -51,14 +51,7 @@ fetch("http://localhost:3000/api/teddies/" + productId)
 
         
 
-/* AJOUT DU PRODUIT DANS LE LOCAL STORAGE */
-
-    let cart = {};
-    localStorage.setItem('cart', JSON.stringify(cart));
 
 
-    function addToCart(product) {
-        
-    }
-
+    
         
