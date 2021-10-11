@@ -1,0 +1,141 @@
+main{
+    display: flex;
+    flex-direction: column;
+    & h1{
+        text-align: center;
+        margin: 20px 0;
+    }
+}
+
+.cart{ 
+    max-width: 1200px;
+	margin: 0 auto;
+}
+
+// CART ITEMS
+
+.cart__items{
+    display: flex;
+    margin-bottom: 50px;
+    padding: 20px;
+    background-color: $color-primary;
+    &__img{
+        width: 20%;
+    }
+        & img{
+            width: 100%;
+            border : 1px solid #ccc;
+        }
+    &__content{
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 50px;
+    }
+        & p{
+            margin: 5px 0 10px 0;
+        }
+        & input{
+            width: 10%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+}
+
+
+
+// CART PRICE
+
+.cart__price{
+	border: 1px solid #000;
+	padding: 20px;
+    font-size: 22px;
+    & span{
+        font-weight: bold;
+    }
+}
+
+
+
+// CART ORDER
+
+.cart__order {
+	display: flex;
+    flex-direction: column;
+	justify-content: center;
+	margin-top: 60px;
+    &__form{
+        display: flex;
+        flex-wrap: wrap;
+        &__question{
+            width: 30%;
+            margin: 20px 0;
+            & input{
+                border: 1px solid #ccc;
+	            height: 26px;
+	            margin-top: 4px;
+            }
+            & input:focus{
+                outline: none;
+            }
+        }
+    }
+}
+
+
+.cart__order__form__submit {
+    width: 100%;
+	justify-content: center;
+    & input{
+        padding: 10px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        margin-top: 20px;
+    }
+    & input:hover{
+        cursor: pointer;
+        border: 1px solid #000;
+        color: #000;
+        background-color: #fff;
+    }
+}
+
+
+
+
+
+/*Media queries*/
+
+@media screen and (max-width: 1199px) { 
+    .cart{
+        padding: 20px;
+    }
+	.cart__items {
+		flex-direction: column;
+		align-items: center;
+	}
+	.cart__items__img {
+		width: 30%;
+	}
+	.cart__items__content {
+		width: 90%;
+        text-align: center;
+	}
+	.cart__items__content__titlePrice {
+		margin-bottom: 20px;
+	}
+	.cart__price p {
+		text-align: center;
+	}
+	.cart__order {
+		justify-content: center;
+	}
+	.cart__order__form {
+		flex-direction: column;
+        justify-content: center;
+        margin: 0 auto;
+        width: 80%;
+	}
+}
