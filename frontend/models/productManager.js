@@ -1,28 +1,28 @@
-function addProduct(articleId){
-    let listFavorites = getProduct();
-    listFavorites.push({id: articleId, date: new Date()});
-    saveFavorites(listFavorites);
+function addProduct(productId){
+    let productAdd = getProduct();
+    productAdd.push({id: productId, Image: product.imageUrl, Name: product.name, Price : product.price});
+    saveProduct(productAdd);
 }
 
-function removeProduct(articleId){
-    let listFavorites = getProduct();
-    listFavorites = listFavorites.filter(favorites => favorites.id != articleId);
-    saveFavorites(listFavorites);
+function removeProduct(productId){
+    let productAdd = getProduct();
+    productAdd = productAdd.filter(product => product._id != productId);
+    saveProduct(productAdd);
 }
 
 function getProduct(){
-    let listFavorites = localStorage.getItem("listFavorites");
-    if(listFavorites == null){
+    let productAdd = localStorage.getItem("productAdd");
+    if(productAdd == null){
         return [];
     }else{
-        return JSON.parse(listFavorites);
+        return JSON.parse(productAdd);
     }
 }
 
-function getFavoritesId(){
-    return getFavorites().map(favorite => favorite.id);
+function getProductId(){
+    return getProduct().map(product => product._id);
 }
 
-function saveProduct(listFavorites){
-    localStorage.setItem("listFavorites",JSON.stringify(listFavorites));
+function saveProduct(productAdd){
+    localStorage.setItem("productAdd",JSON.stringify(productAdd));
 }
