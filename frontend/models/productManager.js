@@ -1,4 +1,4 @@
-function addProduct(productId){
+/*function addProduct(productId){
     let productAdd = getProduct();
     productAdd.push({id: productId, Image: product.imageUrl, Name: product.name, Price : product.price});
     saveProduct(productAdd);
@@ -25,4 +25,4 @@ function getProductId(){
 
 function saveProduct(productAdd){
     localStorage.setItem("productAdd",JSON.stringify(productAdd));
-}
+}*/
