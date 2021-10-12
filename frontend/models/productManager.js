@@ -11,7 +11,7 @@ function removeProduct(productId){
 }
 
 function getProduct(){
-    let productAdd = localStorage.getItem("productAdd");
+    let productAdd = localStorage.getItem("product");
     if(productAdd == null){
         return [];
     }else{
