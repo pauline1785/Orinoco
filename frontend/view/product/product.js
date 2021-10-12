@@ -42,7 +42,7 @@ fetch("http://localhost:3000/api/teddies/" + productId)
             let endProductHtml = `         </ul>
                                         </div>
                                     </div>
-                                    <button id="add_cart" type="submit" name="add_cart">Ajouter au panier</button>
+                                    <button id="addToCart" type="submit" name="addToCart">Ajouter au panier</button>
                                 </div>
                              </div>`;
             //on concatene les trois parties
@@ -50,8 +50,26 @@ fetch("http://localhost:3000/api/teddies/" + productId)
         })
 
         
-
-
-
-    
         
+/* **** Gestion du panier **** */
+
+
+// récupération et écoute du bouton "ajouter au panier"   
+    const cartButton = document.querySelector("#addToCart");
+
+    cartButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
+// récupération des valeurs du formulaire
+    let productOptions = {
+        id : product._id,
+        name : product.name,
+        price : product.price,
+        quantite : 1,
+    };
+
+    console.log(productOptions);
+
+
+/* **** Local Storage **** */
