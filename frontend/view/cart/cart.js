@@ -42,15 +42,15 @@ if(productInLocalStorage === null || productInLocalStorage == 0){
 // bouton supprimer un article du panier
 /*let productDelete = document.querySelector(".item_delete");
 
-for(let j = 0; j < productDelete.length; j++){
+for(let l = 0; l < productDelete.length; l++){
     productDelete.addEventListener("click", function(event) {
         event.preventDefault();
 
-        let idSelectDelete = productInLocalStorage[j].id;
+        let idSelectDelete = productInLocalStorage[l].id;
 
         productInLocalStorage = productInLocalStorage.filter(elt => elt.id != id);
 
         localStorage.setItem("product", JSON.stringify(productInLocalStorage));
         
-});
+    })
 }*/
