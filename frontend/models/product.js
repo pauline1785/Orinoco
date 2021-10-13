@@ -8,3 +8,4 @@ class Product{
         this.colors = jsonProduct.colors;
     }
 }
+
