@@ -13,45 +13,44 @@ fetch("http://localhost:3000/api/teddies/" + productId)
         })
     .then(function(teddie){
         let product = new Product(teddie);
-        let productHtml = `<div class="product">
-                                <img class="product__img" src="${product.imageUrl}"/>
+        let productHtml = `
+            <div class="product">
+                <img class="product__img" src="${product.imageUrl}"/>
 
-                                <div class="product__infos">
-                                    <h1>${product.name}</h1>
-                                    <h2>${product.price}€</h2>
-                                    <p>${product.description}</p>
+                <div class="product__infos">
+                    <h1>${product.name}</h1>
+                    <h2>${product.price}€</h2>
+                    <p>${product.description}</p>
 
-                                    <div class="product__infos__colors">
-                                        <h3>Choix de la couleur</h3>
-                                        <div class="color-choices">
-                                            <ul>`;
-        //boucle avec condition pour verifier si la couleur est compréhensible en css
-        let colorHtml = "" ;
-            for(let i=0; i< product.colors.length; i++){
-                if(product.colors[i] == "Pale brown"){
-                    color = "beige";
-                }else if(product.colors[i] == "Dark brown"){
-                    color = "brown";
-                }else{
-                    color = product.colors[i];
-                }
-                colorHtml += `<li>
-                                <input type="radio" name="choice" id="choice01">
-                                <label for="choice01" style="background-color: ${color};"></label>
-                            </li>`;
-            }
+                    <div class="product__infos__colors">
+                        <form>
+                            <label for="color_choices">Choix de la couleur</label>
+                                <select name="color_choices" id="color_choices">
+                                    
+                                </select>
+                    </div>
+                        <button id="addToCart" type="submit" name="addToCart">Ajouter au panier</button>
+                        </form>
+                </div>
+            </div>
+        `;
+                                                
+        // adaptation des options couleurs au produit
+        const colorChoices = product.colors;
+        let colorOptions =  [];
+        // boucle pour afficher tous les choix
+        for(let j = 0; j < colorChoices.length; j++){
+            colorOptions = colorOptions + `
+                <option value="${j+1}">${colorChoices[j]}</option>
+            `;
+        }
 
-        let endProductHtml = `      </ul>
-                                    </div>
-                                </div>
-                                <button id="addToCart" type="submit" name="addToCart">Ajouter au panier</button>
-                            </div>
-                        </div>`;
+        // injection HTML dans la page produit
+        document.querySelector(".container").innerHTML = productHtml;
+        // injection des otpions dans le formulaire
+        document.querySelector("#color_choices").innerHTML = colorOptions;
 
-        //on concatene les trois parties
-        document.querySelector(".container").innerHTML = productHtml + colorHtml + endProductHtml;                                          
 
-       
         
 /* **** Gestion du panier **** */
 
@@ -59,50 +58,49 @@ fetch("http://localhost:3000/api/teddies/" + productId)
     const cartButton = document.querySelector("#addToCart");
         cartButton.addEventListener("click", function(event) {
             event.preventDefault();
+
+            // récupération des valeurs du formulaire
+            let productOptions = {
+                id : product._id,
+                imageUrl : product.imageUrl,
+                name : product.name,
+                price : product.price,
+                quantite : 1,
+            };
+            
+            // variable dans laquelle on met les key qui sont dans le local storage
+            let productInLocalStorage = JSON.parse(localStorage.getItem("product"));
+
+            // fenêtre popup
+            const popupValidation = function(){
+                if(window.confirm(`${product.name} a bien été ajouté au panier`)){
+                    window.location.href = "../cart/cart.html";
+                }else{
+                    window.location.href = "../index.html";
+                }
+            }
+
+            // fonction ajout produit au local storage
+            const addToLocalStorage  = function(){
+                // ajout dans le tableau de l'objet avec les values choisies
+                productInLocalStorage.push(productOptions);
+                // transformation en JSON puis envoi dans la key du local storage
+                localStorage.setItem("product",JSON.stringify(productInLocalStorage));   
+            };
+
+            // condition pour vérifier s'il y a déjà ou pas quelque chose dans le local storage
+            if(productInLocalStorage){
+                addToLocalStorage();
+                popupValidation();
+            }else{
+                productInLocalStorage = [];
+                addToLocalStorage();
+                popupValidation();
+            };
         });
 
 
-    // récupération des valeurs du formulaire
-    let productOptions = {
-        id : product._id,
-        imageUrl : product.imageUrl,
-        name : product.name,
-        price : product.price,
-        quantite : 1,
-    };
+    
 
-
-
-/* **** Local Storage **** */
-
-    // variable dans laquelle on met les key qui sont dans le local storage
-    let productInLocalStorage = JSON.parse(localStorage.getItem("product"));
-
-    // fenêtre popup
-    /*const popupValidation = function(){
-        if(window.confirm(`${product.name} a bien été ajouté au panier`)){
-            window.location.href = "../cart/cart.html";
-        }else{
-            window.location.href = "../index.html";
-        }
-    }*/
-
-    // fonction ajout produit au local storage
-    const addToLocalStorage  = function(){
-        // ajout dans le tableau de l'objet avec les values choisies
-        productInLocalStorage.push(productOptions);
-        // transformation en JSON puis envoi dans la key du local storage
-        localStorage.setItem("product",JSON.stringify(productInLocalStorage));   
-    };
-
-    // condition pour vérifier s'il y a déjà ou pas quelque chose dans le local storage
-    if(productInLocalStorage){
-        addToLocalStorage();
-
-    } else{
-        productInLocalStorage = [];
-        addToLocalStorage();
-
-    };
 
 });

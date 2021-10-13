@@ -26,3 +26,8 @@ function getProductId(){
 function saveProduct(productAdd){
     localStorage.setItem("productAdd",JSON.stringify(productAdd));
 }*/
+
+
+
+
+
