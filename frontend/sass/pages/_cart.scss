@@ -33,7 +33,8 @@ main{
         margin-left: 50px;
     }
         & p{
-            margin: 5px 0 10px 0;
+            margin: 5px 0;
+            font-size: 14px;
         }
         & input{
             width: 10%;
@@ -42,8 +43,11 @@ main{
             margin-bottom: 10px;
         }
         & button{
-            height: 15px;
+            height: 20px;
             width: 10%;
+            border: none;
+            cursor: pointer;
+            background-color: $color-primary;
         }
 }
 
@@ -92,14 +96,14 @@ main{
 .cart__order__form__submit {
     width: 100%;
 	justify-content: center;
-    & input{
+    & button{
         padding: 10px;
         background-color: #000;
         color: #fff;
         border: none;
         margin-top: 20px;
     }
-    & input:hover{
+    & button:hover{
         cursor: pointer;
         border: 1px solid #000;
         color: #000;
