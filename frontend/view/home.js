@@ -1,16 +1,13 @@
-/* Génère l'appel de l'API et l'affichage de tous les produits */
-
+/* APPEL DE L'API ET AFFICHAGE DE TOUS LES PRODUITS */
 
 fetch("http://localhost:3000/api/teddies")
-// pour gérer le cas d'erreur, si l'api ne fonctionne pas
-    .then(function(response){ //récupère la réponse du fetch
+    //récupère la réponse du fetch
+    .then(function(response){ 
         if(response.ok ){
             let teddies = response.json();
             return teddies;
-        }else{
-
         }
-// pour afficher tous les produits sur la page
+    // affiche tous les produits sur la page
     }).then(function(teddies) {
         let teddie = '';
         for (let i = 0; i < teddies.length; i++) {
@@ -26,6 +23,6 @@ fetch("http://localhost:3000/api/teddies")
                                                                     </a>
                                                                 </div>`;
         }
-    })
+    });
 
 
