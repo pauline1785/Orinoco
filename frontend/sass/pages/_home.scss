@@ -4,14 +4,19 @@
     margin: 0 auto;
     text-align: center;
     height: 250px;
-    background-color: $color-primary;
+    background-image: url(../../public/img/teddy_large.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    object-fit: cover;
     border-bottom: 1px solid #ccc;
     & h1{
         padding: 2.5em 0;
         font-size: 24px;
+        color: #fff;
     }
     & h2{
         font-size: 18px;
+        color: #fff;
     }
 }
 
@@ -23,7 +28,7 @@
     display: flex;
     justify-content: space-between;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 50px auto;
 }
 
 .products{
@@ -38,22 +43,17 @@
         border-top-right-radius: 15px;
         box-shadow: 2px 2px 5px rgba(0 0 0 / 20%);
         position: relative;
-        margin-top: 20px;
         text-decoration: none;
         color: #000;
         text-align: center;
     }
     & figure{
         overflow: hidden;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
     }
     & img{
         width: 100%;
         height: 150px;
         object-fit: cover;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
         transform: scale(1);
 	    transition: .3s ease-in-out;
         &:hover{
@@ -78,8 +78,13 @@
         flex-direction: column;
     }
 
-    .product a{
-        width: 80%;
-        margin: 20px auto;
+    .products{
+        & a{
+            width: 80%;
+            margin: 20px auto;
+        }
+        & img{
+            height: auto;
+        }
     }
 }
