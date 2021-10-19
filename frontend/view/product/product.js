@@ -71,15 +71,6 @@ fetch("http://localhost:3000/api/teddies/" + productId)
             // variable dans laquelle on met les key qui sont dans le local storage
             let productInLocalStorage = JSON.parse(localStorage.getItem("product"));
 
-            // fenêtre popup
-            const popupValidation = function(){
-                if(window.confirm(`${product.name} a bien été ajouté au panier`)){
-                    window.location.href = "../cart/cart.html";
-                }else{
-                    window.location.href = "../index.html";
-                }
-            }
-
             // fonction ajout produit au local storage
             const addToLocalStorage  = function(){
                 // ajout dans le tableau de l'objet avec les values choisies
@@ -91,11 +82,9 @@ fetch("http://localhost:3000/api/teddies/" + productId)
             // condition pour vérifier s'il y a déjà ou pas quelque chose dans le local storage
             if(productInLocalStorage){
                 addToLocalStorage();
-                popupValidation();
             }else{
                 productInLocalStorage = [];
                 addToLocalStorage();
-                popupValidation();
             };
         });
 
