@@ -69,21 +69,21 @@ fetch("http://localhost:3000/api/teddies/" + productId)
             };
             
             // variable dans laquelle on met les key qui sont dans le local storage
-            let productInLocalStorage = JSON.parse(localStorage.getItem("product"));
+            let products = JSON.parse(localStorage.getItem("product"));
 
             // fonction ajout produit au local storage
             const addToLocalStorage  = function(){
                 // ajout dans le tableau de l'objet avec les values choisies
-                productInLocalStorage.push(productOptions);
+                products.push(productOptions);
                 // transformation en JSON puis envoi dans la key du local storage
-                localStorage.setItem("product",JSON.stringify(productInLocalStorage));   
+                localStorage.setItem("product",JSON.stringify(products));   
             };
 
             // condition pour vérifier s'il y a déjà ou pas quelque chose dans le local storage
-            if(productInLocalStorage){
+            if(products){
                 addToLocalStorage();
             }else{
-                productInLocalStorage = [];
+                products = [];
                 addToLocalStorage();
             };
         });
