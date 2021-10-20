@@ -1,7 +1,7 @@
 /* AFFICHAGE DES PRODUITS DU LOCALSTORAGE + PRIX TOTAL + ENVOI DE LA COMMANDE */
 
 // récupération du local storage
-let productInLocalStorage = JSON.parse(localStorage.getItem("product"));
+let products = JSON.parse(localStorage.getItem("product"));
 
 /* **** Affichage des produits dans le panier **** */
 // sélection de la classe où l'on injecte le html
@@ -10,7 +10,7 @@ const cartHtml = document.querySelector(".cart");
 // verifier si le panier est vide ou pas
 let structureProductCart = [];
 
-if(productInLocalStorage === null || productInLocalStorage == 0){
+if(products === null || products == 0){
     const emptyCart = ` 
     <section class="cart__items">
         <p>Le panier est vide</p>
@@ -18,29 +18,29 @@ if(productInLocalStorage === null || productInLocalStorage == 0){
     `;
     cartHtml.innerHTML = emptyCart;
 }else{
-    for(i=0; i < productInLocalStorage.length; i++){
+    for(i=0; i < products.length; i++){
         structureProductCart = structureProductCart + `
         <section class="cart__items">
             <div class="cart__items__img">
-                <img src="${productInLocalStorage[i].imageUrl}" alt="Photo d'un ours en peluche">
+                <img src="${products[i].imageUrl}" alt="Photo d'un ours en peluche">
             </div>
             <div class="cart__items__content">
-                <h2>${productInLocalStorage[i].name}</h2>
-                <p>${productInLocalStorage[i].price}€</p>
+                <h2>${products[i].name}</h2>
+                <p>${products[i].price}€</p>
                 <p>Quantité</p>
                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="10" value="1">
-                <button class="item_delete" data-parent="${productInLocalStorage[i].id}"><i class="far fa-trash-alt"></i></button>
+                <button class="item_delete" data-parent="${products[i].id}"><i class="far fa-trash-alt"></i></button>
             </div>
         </section>
          `;
     }
-    if(i == productInLocalStorage.length){
+    if(i == products.length){
         cartHtml.innerHTML = structureProductCart;
     }
 };
 
 // bouton supprimer un article du panier
-let productDeleteTab = document.querySelector(".item_delete");
+/*let productDeleteTab = document.querySelector(".item_delete");
 
     productDeleteTab.addEventListener("click", function(event){
         event.preventDefault();
@@ -49,7 +49,7 @@ let productDeleteTab = document.querySelector(".item_delete");
         let idSelectDelete = productInLocalStorage[0].id; 
         productInLocalStorage = productInLocalStorage.filter(elt => elt.id !== idSelectDelete);
         localStorage.setItem("product", JSON.stringify(productInLocalStorage));  
-});
+});*/
 
 
 
@@ -57,8 +57,8 @@ let productDeleteTab = document.querySelector(".item_delete");
 let calculTotal = [];
 
 // aller chercher tous les prix
-for(let i = 0; i < productInLocalStorage.length; i ++){
-    let productPriceInCart = productInLocalStorage[i].price;
+for(let i = 0; i < products.length; i ++){
+    let productPriceInCart = products[i].price;
 
     calculTotal.push(productPriceInCart)
 }
@@ -130,7 +130,7 @@ const buttonSubmitForm = document.querySelector("#order");
 buttonSubmitForm.addEventListener("click", function(event){
     event.preventDefault();
     //récupération des données du formulaire
-    const formValues = new Form();
+    const contact = new Form();
 
     //validation du formulaire en utilisant les Expressions Régulières (regex)
     const regExEmail = (value) =>{
@@ -143,7 +143,7 @@ buttonSubmitForm.addEventListener("click", function(event){
 
     //controle de la validité de l'email
     function emailControl(){
-        const emailValid = formValues.email;
+        const emailValid = contact.email;
         if(regExEmail(emailValid)){
             return true;
         }else{
@@ -153,7 +153,7 @@ buttonSubmitForm.addEventListener("click", function(event){
     }
     //controle de la validité du code postal
     function postalCodeControl(){
-        const postalCodeValid = formValues.postalCode;
+        const postalCodeValid = contact.postalCode;
         if(regExCodePostal(postalCodeValid)){
             return true;
         }else{
@@ -164,25 +164,25 @@ buttonSubmitForm.addEventListener("click", function(event){
 
     // mettre les données du formulaire dans le local storage si le formulaire est validé
     if(emailControl() && postalCodeControl()){
-        localStorage.setItem("formValues", JSON.stringify(formValues));
+        localStorage.setItem("contact", JSON.stringify(contact));
     }else{
         alert("Veuillez remplir le formulaire.");
     }
     
     //regroupement des produits et des données du formulaire
-    const submitOrder  = {
-        productInLocalStorage, formValues
+    const customerOrder  = {
+        products, contact
     }
-    console.log("submitOrder");
-    console.log(submitOrder);
 
     //envoi de la commande vers le server
-    const response = fetch('http://localhost:3000/api/teddies/order', {
+    fetch("http://localhost:3000/api/teddies/order" , {
         method: 'POST',
-        body: JSON.stringify(submitOrder),
         headers: {
-            'Content-Type': 'application/json',
-        }
-    });
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(products, contact),
+    })
+    .then(response => response.json())
 });
 
