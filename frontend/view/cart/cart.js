@@ -77,6 +77,7 @@ const totalPriceHTML = `
 cartHtml.insertAdjacentHTML("beforeend", totalPriceHTML);
 
 
+
 /* **** Formulaire validation commande **** */
 const orderHTML = () => {
     const formHTML = document.querySelector(".cart");
@@ -100,11 +101,6 @@ const orderHTML = () => {
                 <div class="cart__order__form__question">
                     <label for="address">Adresse: </label>
                     <input type="text" name="address" id="address" required>
-                </div>
-                <div class="cart__order__form__question">
-                    <label for="postalCode">Code postal: </label>
-                    <input type="text" name="postalCode" id="postalCode" required>
-                    <br><span id="postalcode_invalid"></span>
                 </div>
                 <div class="cart__order__form__question">
                     <label for="city">Ville: </label>
@@ -137,10 +133,6 @@ buttonSubmitForm.addEventListener("click", function(event){
         return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
     }
 
-    const regExCodePostal = (value) =>{
-        return /^[0-9]{5}$/.test(value);
-    }
-
     //controle de la validité de l'email
     function emailControl(){
         const emailValid = contact.email;
@@ -151,38 +143,29 @@ buttonSubmitForm.addEventListener("click", function(event){
             return false;
         }
     }
-    //controle de la validité du code postal
-    function postalCodeControl(){
-        const postalCodeValid = contact.postalCode;
-        if(regExCodePostal(postalCodeValid)){
-            return true;
-        }else{
-            document.querySelector("#postalcode_invalid").textContent = "Veuillez saisir un Code Postal à 5 chiffres.";
-            return false;
-        }
-    }
 
     // mettre les données du formulaire dans le local storage si le formulaire est validé
-    if(emailControl() && postalCodeControl()){
+    if(emailControl()){
         localStorage.setItem("contact", JSON.stringify(contact));
     }else{
         alert("Veuillez remplir le formulaire.");
     }
     
-    //regroupement des produits et des données du formulaire
-    const customerOrder  = {
-        products, contact
-    }
 
     //envoi de la commande vers le server
     fetch("http://localhost:3000/api/teddies/order" , {
-        method: 'POST',
+        "method": "POST",
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(products, contact),
+        "body": {
+            "contact" : {
+              "firstName":"Marialena","lastName": "PIETRI","address": "3 rue de la Verge dOr","city": "TOULOUSE","email": "marialena.pietri@lilo.org"
+            },
+              "products": ["5be9c8541c9d440000665243", "5beaa8bf1c9d440000a57d94", "5beaaa8f1c9d440000a57d95"]
+          }
     })
     .then(response => response.json())
+    
 });
 
