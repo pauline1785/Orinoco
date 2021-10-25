@@ -1,7 +1,7 @@
 /* AFFICHAGE DES PRODUITS DU LOCALSTORAGE + PRIX TOTAL + ENVOI DE LA COMMANDE */
 
 // récupération du local storage
-let products = JSON.parse(localStorage.getItem("product"));
+let productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
 
 /* **** Affichage des produits dans le panier **** */
 // sélection de la classe où l'on injecte le html
@@ -10,7 +10,7 @@ const cartHtml = document.querySelector(".cart");
 // verifier si le panier est vide ou pas
 let structureProductCart = [];
 
-if(products === null || products == 0){
+if(productsInLocalStorage === null || productsInLocalStorage == 0){
     const emptyCart = ` 
     <section class="cart__items">
         <p>Le panier est vide</p>
@@ -18,23 +18,23 @@ if(products === null || products == 0){
     `;
     cartHtml.innerHTML = emptyCart;
 }else{
-    for(i=0; i < products.length; i++){
+    for(i=0; i < productsInLocalStorage.length; i++){
         structureProductCart = structureProductCart + `
         <section class="cart__items">
             <div class="cart__items__img">
-                <img src="${products[i].imageUrl}" alt="Photo d'un ours en peluche">
+                <img src="${productsInLocalStorage[i].imageUrl}" alt="Photo d'un ours en peluche">
             </div>
             <div class="cart__items__content">
-                <h2>${products[i].name}</h2>
-                <p>${products[i].price}€</p>
+                <h2>${productsInLocalStorage[i].name}</h2>
+                <p>${productsInLocalStorage[i].price}€</p>
                 <p>Quantité</p>
                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="10" value="1">
-                <button class="item_delete" data-parent="${products[i].id}"><i class="far fa-trash-alt"></i></button>
+                <button class="item_delete" data-parent="${productsInLocalStorage[i].id}"><i class="far fa-trash-alt"></i></button>
             </div>
         </section>
          `;
     }
-    if(i == products.length){
+    if(i == productsInLocalStorage.length){
         cartHtml.innerHTML = structureProductCart;
     }
 };
@@ -47,7 +47,7 @@ if(products === null || products == 0){
         let btnDelete = event.target;
 
         let idSelectDelete = productInLocalStorage[0].id; 
-        productInLocalStorage = productInLocalStorage.filter(elt => elt.id !== idSelectDelete);
+        productsInLocalStorage = productsInLocalStorage.filter(elt => elt.id !== idSelectDelete);
         localStorage.setItem("product", JSON.stringify(productInLocalStorage));  
 });*/
 
@@ -57,8 +57,8 @@ if(products === null || products == 0){
 let calculTotal = [];
 
 // aller chercher tous les prix
-for(let i = 0; i < products.length; i ++){
-    let productPriceInCart = products[i].price;
+for(let i = 0; i < productsInLocalStorage.length; i ++){
+    let productPriceInCart = productsInLocalStorage[i].price;
 
     calculTotal.push(productPriceInCart)
 }
@@ -79,8 +79,7 @@ cartHtml.insertAdjacentHTML("beforeend", totalPriceHTML);
 
 
 /* **** Formulaire validation commande **** */
-const orderHTML = () => {
-    const formHTML = document.querySelector(".cart");
+const formHTML = document.querySelector(".cart");
     const formStructure = `
         <section class="cart__order">
             <h3>Finaliser la commande :</h3>
@@ -112,60 +111,50 @@ const orderHTML = () => {
             </form>
         </section>
     `;
-
     formHTML.insertAdjacentHTML("beforeend", formStructure);
-};
 
-orderHTML();
-
+    //validation du formulaire en utilisant les Expressions Régulières (regex)
+    function emailValid(value){
+        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
+    }
+    //fonction qui controle de la validité de l'email
+    email.addEventListener("change", function (event) {
+        if (emailValid(email.value)){
+        } else {
+            document.querySelector("#email_invalid").textContent = "Veuillez saisir un email valide.";
+        }
+    });
+    
 
 /* **** Récupération des données du formulaire **** */
 //sélection du bouton submit pour faire un event listener dessus
 const buttonSubmitForm = document.querySelector("#order");
 
 buttonSubmitForm.addEventListener("click", function(event){
-    event.preventDefault();
-    //récupération des données du formulaire
-    const contact = new Form();
-
-    //validation du formulaire en utilisant les Expressions Régulières (regex)
-    const regExEmail = (value) =>{
-        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
-    }
-
-    //controle de la validité de l'email
-    function emailControl(){
-        const emailValid = contact.email;
-        if(regExEmail(emailValid)){
-            return true;
-        }else{
-            document.querySelector("#email_invalid").textContent = "Veuillez saisir un email valide.";
-            return false;
-        }
-    }
-
-    // mettre les données du formulaire dans le local storage si le formulaire est validé
-    if(emailControl()){
+    if(emailValid(email.value)){
+        event.preventDefault();
+        //récupération des données du formulaire + le contenu du panier
+        const contact = new Form();
+        const products = productsInLocalStorage;
+        // mettre les données du formulmaire dans le local storage
         localStorage.setItem("contact", JSON.stringify(contact));
+
+        //envoi de la commande vers le server
+        fetch('http://localhost:3000/api/teddies/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(contact, products)
+        })
+        .then(response => response.json())
+
     }else{
         alert("Veuillez remplir le formulaire.");
     }
     
 
-    //envoi de la commande vers le server
-    fetch("http://localhost:3000/api/teddies/order" , {
-        "method": "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        "body": {
-            "contact" : {
-              "firstName":"Marialena","lastName": "PIETRI","address": "3 rue de la Verge dOr","city": "TOULOUSE","email": "marialena.pietri@lilo.org"
-            },
-              "products": ["5be9c8541c9d440000665243", "5beaa8bf1c9d440000a57d94", "5beaaa8f1c9d440000a57d95"]
-          }
-    })
-    .then(response => response.json())
+    
     
 });
 

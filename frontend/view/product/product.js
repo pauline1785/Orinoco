@@ -8,11 +8,11 @@ const productId= urlParams.get("id");
 
 fetch("http://localhost:3000/api/teddies/" + productId)
     .then(function(response) {
-        let teddie = response.json();
-        return teddie;
+        let teddy = response.json();
+        return teddy;
         })
-    .then(function(teddie){
-        let product = new Product(teddie);
+    .then(function(teddy){
+        let product = new Product(teddy);
         let productHtml = `
             <div class="product">
                 <img class="product__img" src="${product.imageUrl}"/>
@@ -47,7 +47,7 @@ fetch("http://localhost:3000/api/teddies/" + productId)
 
         // injection HTML dans la page produit
         document.querySelector(".container").innerHTML = productHtml;
-        // injection des otpions dans le formulaire
+        // injection des otpions couleurs dans le formulaire
         document.querySelector("#color_choices").innerHTML = colorOptions;
 
 
@@ -69,27 +69,24 @@ fetch("http://localhost:3000/api/teddies/" + productId)
             };
             
             // variable dans laquelle on met les key qui sont dans le local storage
-            let products = JSON.parse(localStorage.getItem("product"));
+            let productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
 
             // fonction ajout produit au local storage
-            const addToLocalStorage  = function(){
+            function addToLocalStorage(){
                 // ajout dans le tableau de l'objet avec les values choisies
-                products.push(productOptions);
-                // transformation en JSON puis envoi dans la key du local storage
-                localStorage.setItem("product",JSON.stringify(products));   
+                productsInLocalStorage.push(productOptions);
+                // transformation en format JSON puis envoi dans la key "products" du local storage
+                localStorage.setItem("products",JSON.stringify(productsInLocalStorage));   
             };
 
             // condition pour vérifier s'il y a déjà ou pas quelque chose dans le local storage
-            if(products){
+            //s'il y a quelque chose
+            if(productsInLocalStorage){
                 addToLocalStorage();
+            // s'il n'y a rien
             }else{
-                products = [];
+                productsInLocalStorage = [];
                 addToLocalStorage();
             };
         });
-
-
-    
-
-
 });

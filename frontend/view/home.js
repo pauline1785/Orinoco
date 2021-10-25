@@ -9,14 +9,14 @@ fetch("http://localhost:3000/api/teddies")
         }
     // affiche tous les produits sur la page
     }).then(function(teddies) {
-        let teddie = '';
+        let teddy = '';
         for (let i = 0; i < teddies.length; i++) {
-            teddie = teddies[i];
-            let product = new Product(teddie);
+            teddy = teddies[i];
+            let product = new Product(teddy);
             document.querySelector(".container").innerHTML += `<div class="products">
-                                                                    <a href="product/product.html?id=${product._id}" alt="photo d'ours en peluche">
+                                                                    <a href="product/product.html?id=${product._id}">
                                                                         <figure>
-                                                                            <img src="${product.imageUrl}"/>
+                                                                            <img src="${product.imageUrl}" alt="photo d'ours en peluche"/>
                                                                         </figure>
                                                                         <h3>${product.name}</h3>
                                                                         <p>${product.price}€</p>
