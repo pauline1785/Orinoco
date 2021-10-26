@@ -133,22 +133,37 @@ const buttonSubmitForm = document.querySelector("#order");
 buttonSubmitForm.addEventListener("click", function(event){
     if(emailValid(email.value)){
         event.preventDefault();
-        //récupération des données du formulaire + le contenu du panier
-        const contact = new Form();
-        const products = productsInLocalStorage;
+        //récupération des données du formulaire + les ID des produits du panier
+        const contact = new Contact();
+        console.log(contact);
+
+        const idCart = [];
+        for(i = 0; i < productsInLocalStorage.length; i++){
+            idCart.push(productsInLocalStorage[i].id);
+        }
+        let products = idCart;
+        console.log(products);
+
         // mettre les données du formulmaire dans le local storage
         localStorage.setItem("contact", JSON.stringify(contact));
 
         //envoi de la commande vers le server
-        fetch('http://localhost:3000/api/teddies/order', {
+        const sendOrder = fetch('http://localhost:3000/api/teddies/order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(contact, products)
         })
-        .then(response => response.json())
-
+        console.log("sendOrder");
+        console.log(sendOrder);
+        /*.then((response) => response.json())
+        .then((json) => {
+            localStorage.setItem("orderId", json.orderId);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });*/
     }else{
         alert("Veuillez remplir le formulaire.");
     }
