@@ -1,4 +1,9 @@
-
+.container__product{
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 50px auto;
+}
 
 .product{
     display: flex;
