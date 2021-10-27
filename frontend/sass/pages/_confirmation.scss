@@ -1,0 +1,12 @@
+.confirmation{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    & p{
+        padding: 20px 0;
+        line-height: 150%;
+    }
+    & span{
+        font-weight: bold;
+    }
+}
