@@ -4,7 +4,7 @@
 let productsInLocalStorage = JSON.parse(localStorage.getItem("products"));
 
 /* **** Affichage des produits dans le panier **** */
-// sélection de la classe où l'on injecte le html
+// sélection du DOM pour injecter le HTML
 const cartHtml = document.querySelector(".cart");
 
 // verifier si le panier est vide ou pas
@@ -76,95 +76,72 @@ const totalPriceHTML = `
 // beforeend permet de placer le HTML à l'intérieur de l'élément (div cart), après son dernier enfant
 cartHtml.insertAdjacentHTML("beforeend", totalPriceHTML);
 
+// envoi du prix total dans le local storage
+localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 
-
-/* **** Formulaire validation commande **** */
-const formHTML = document.querySelector(".cart");
-    const formStructure = `
-        <section class="cart__order">
-            <h3>Finaliser la commande :</h3>
-            <form method="get" class="cart__order__form">
-                <div class="cart__order__form__question">
-                    <label for="lastName">Nom: </label>
-                    <input type="text" name="lastName" id="lastName" required>
-                </div>
-                <div class="cart__order__form__question">
-                    <label for="firstName">Prénom: </label>
-                    <input type="text" name="firstName" id="firstName" required>
-                </div>
-                <div class="cart__order__form__question">
-                    <label for="email">Email: </label>
-                    <input type="email" name="email" id="email" required>
-                    <br><span id="email_invalid"></span>
-                </div>
-                <div class="cart__order__form__question">
-                    <label for="address">Adresse: </label>
-                    <input type="text" name="address" id="address" required>
-                </div>
-                <div class="cart__order__form__question">
-                    <label for="city">Ville: </label>
-                    <input type="text" name="city" id="city" required>
-                </div>
-                <div class="cart__order__form__submit">
-                    <button type="submit" id="order">Valider la commande</button>
-                </div>
-            </form>
-        </section>
-    `;
-    formHTML.insertAdjacentHTML("beforeend", formStructure);
-
-    //validation du formulaire en utilisant les Expressions Régulières (regex)
-    function emailValid(value){
-        return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
+/* **** Formulaire **** */
+// validation du formulaire en utilisant les Expressions Régulières (regex)
+function emailValid(value){
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
+}
+// fonction qui controle de la validité de l'email
+email.addEventListener("change", function (event) {
+    if (emailValid(email.value)){
+    } else {
+        document.querySelector("#email_invalid").textContent = "Veuillez saisir un email valide.";
     }
-    //fonction qui controle de la validité de l'email
-    email.addEventListener("change", function (event) {
-        if (emailValid(email.value)){
-        } else {
-            document.querySelector("#email_invalid").textContent = "Veuillez saisir un email valide.";
-        }
-    });
-    
+});
 
-/* **** Récupération des données du formulaire **** */
-//sélection du bouton submit pour faire un event listener dessus
+
+
+/* **** Récupération des données **** */
+// sélection du bouton submit pour faire un event listener dessus
 const buttonSubmitForm = document.querySelector("#order");
 
 buttonSubmitForm.addEventListener("click", function(event){
     if(emailValid(email.value)){
         event.preventDefault();
-        //récupération des données du formulaire + les ID des produits du panier
+        // récupération des données du formulaire + les ID des produits du panier
         const contact = new Contact();
-        console.log(contact);
 
         const idCart = [];
         for(i = 0; i < productsInLocalStorage.length; i++){
             idCart.push(productsInLocalStorage[i].id);
         }
         let products = idCart;
-        console.log(products);
 
         // mettre les données du formulmaire dans le local storage
         localStorage.setItem("contact", JSON.stringify(contact));
-
-        //envoi de la commande vers le server
-        const sendOrder = fetch('http://localhost:3000/api/teddies/order', {
+        // regroupement des données du panier dans une variable
+        const customerOrder = {
+            contact,
+            products
+        };
+        // envoi de la commande vers le server
+        fetch('http://localhost:3000/api/teddies/order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(contact, products)
+            body: JSON.stringify(customerOrder)
         })
-        console.log("sendOrder");
-        console.log(sendOrder);
-        /*.then((response) => response.json())
-        .then((json) => {
+        .then(response => {
+            if(response.ok){
+                return response.json();
+            }else{
+                throw new Error('Erreur d\'envoi de la commande');
+            }
+        })
+        .then(json => {
+            // stockage de l'Id retourné par l'API dans le local storage
             localStorage.setItem("orderId", json.orderId);
+            // redirection vers la page confirmation
+            return (window.location.href = `../confirmation/confirmation.html?orderId=${json.orderId}`);
         })
-        .catch((error) => {
-            console.error("Error:", error);
-        });*/
-    }else{
+        .catch(error => {
+            alert(error);
+        });
+    } else{
         alert("Veuillez remplir le formulaire.");
     }
     
