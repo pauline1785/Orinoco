@@ -46,7 +46,7 @@ fetch("http://localhost:3000/api/teddies/" + productId)
         }
 
         // injection HTML dans la page produit
-        document.querySelector(".container").innerHTML = productHtml;
+        document.querySelector(".container__product").innerHTML = productHtml;
         // injection des otpions couleurs dans le formulaire
         document.querySelector("#color_choices").innerHTML = colorOptions;
 
