@@ -1,9 +1,9 @@
-main{
+.container__cart{
     display: flex;
     flex-direction: column;
     & h1{
         text-align: center;
-        margin: 50px 0 0 0;
+        margin-top: 50px;
     }
 }
 
@@ -67,13 +67,12 @@ main{
 
 
 
-// CART ORDER
+// FORM
 
 .cart__order {
 	display: flex;
     flex-direction: column;
 	justify-content: center;
-	margin-top: 60px;
     &__form{
         display: flex;
         flex-wrap: wrap;
