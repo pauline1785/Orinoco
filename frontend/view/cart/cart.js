@@ -27,8 +27,6 @@ if(productsInLocalStorage === null || productsInLocalStorage == 0){
             <div class="cart__items__content">
                 <h2>${productsInLocalStorage[i].name}</h2>
                 <p>${productsInLocalStorage[i].price}€</p>
-                <p>Quantité</p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="10" value="1">
                 <button class="item_delete" data-parent="${productsInLocalStorage[i].id}"><i class="far fa-trash-alt"></i></button>
             </div>
         </section>
@@ -40,16 +38,21 @@ if(productsInLocalStorage === null || productsInLocalStorage == 0){
 };
 
 // bouton supprimer un article du panier
-/*let productDeleteTab = document.querySelector(".item_delete");
+/*let productDelete = document.querySelector(".item_delete");
 
-    productDeleteTab.addEventListener("click", function(event){
+for (let i = 0; i < productDelete.length; i++) {
+    productDelete[i].addEventListener("click", (event) => {
         event.preventDefault();
-        let btnDelete = event.target;
 
-        let idSelectDelete = productInLocalStorage[0].id; 
-        productsInLocalStorage = productsInLocalStorage.filter(elt => elt.id !== idSelectDelete);
-        localStorage.setItem("product", JSON.stringify(productInLocalStorage));  
-});*/
+        let idDelete = productsInLocalStorage[i].id;
+
+        productsInLocalStorage  = productsInLocalStorage.filter(
+            (el) => el.id !== idDelete
+        );
+
+        localStorage.setItem("products", JSON.stringify(productsInLocalStorage));
+    })
+};*/
 
 
 
@@ -79,12 +82,36 @@ cartHtml.insertAdjacentHTML("beforeend", totalPriceHTML);
 // envoi du prix total dans le local storage
 localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
 
+
+
 /* **** Formulaire **** */
 // validation du formulaire en utilisant les Expressions Régulières (regex)
+function namesAndCityValid(value){
+    return /^[A-Z-a-z\s]{3,40}$/.test(value);
+}
+
 function emailValid(value){
     return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value);
 }
+
+function addressValid(value){
+    return /^[A-Z-a-z-0-9\s]{5,80}$/.test(value);
+}
 // fonction qui controle de la validité de l'email
+firstName.addEventListener("change", function (event) {
+    if (namesAndCityValid(firstName.value)){
+    } else {
+        document.querySelector("#firstname_invalid").textContent = "Veuillez saisir un prénom sans chiffres ni symboles";
+    }
+});
+
+lastName.addEventListener("change", function (event) {
+    if (namesAndCityValid(lastName.value)){
+    } else {
+        document.querySelector("#lastname_invalid").textContent = "Veuillez saisir un nom sans chiffres ni symboles";
+    }
+});
+
 email.addEventListener("change", function (event) {
     if (emailValid(email.value)){
     } else {
@@ -92,14 +119,32 @@ email.addEventListener("change", function (event) {
     }
 });
 
+address.addEventListener("change", function (event) {
+    if (addressValid(address.value)){
+    } else {
+        document.querySelector("#address_invalid").textContent = "Veuillez saisir una adresse valide.";
+    }
+});
 
+city.addEventListener("change", function (event) {
+    if (namesAndCityValid(city.value)){
+    } else {
+        document.querySelector("#city_invalid").textContent = "Veuillez saisir une ville valide";
+    }
+});
+
+formValid = () => {
+    if(namesAndCityValid(firstName.value) && emailValid(email.value) && addressValid(address.value)){
+        return true;
+    }   
+};
 
 /* **** Récupération des données **** */
 // sélection du bouton submit pour faire un event listener dessus
 const buttonSubmitForm = document.querySelector("#order");
 
 buttonSubmitForm.addEventListener("click", function(event){
-    if(emailValid(email.value)){
+    if(formValid()){
         event.preventDefault();
         // récupération des données du formulaire + les ID des produits du panier
         const contact = new Contact();
