@@ -38,22 +38,27 @@
                     <div class="cart__order__form__question">
                         <label for="lastName">Nom: </label>
                         <input type="text" name="lastName" id="lastName" required>
+                        <br><span id="lastname_invalid"></span>
                     </div>
                     <div class="cart__order__form__question">
                         <label for="firstName">Prénom: </label>
                         <input type="text" name="firstName" id="firstName" required>
+                        <br><span id="firstname_invalid"></span>
                     </div>
                     <div class="cart__order__form__question">
                         <label for="email">Email: </label>
                         <input type="email" name="email" id="email" required>
+                        <br><span id="email_invalid"></span>
                     </div>
                     <div class="cart__order__form__question">
                         <label for="address">Adresse: </label>
                         <input type="text" name="address" id="address" required>
+                        <br><span id="address_invalid"></span>
                     </div>
                     <div class="cart__order__form__question">
                         <label for="city">Ville: </label>
                         <input type="text" name="city" id="city" required>
+                        <br><span id="city_invalid"></span>
                     </div>
                     <div class="cart__order__form__submit">
                         <button type="submit" id="order">Valider la commande</button>
@@ -76,7 +81,6 @@
 
     <script src="cart.js"></script>
     <script src="../../models/contact.js"></script>
-    <script src="../../models/productManager.js"></script>
     
 
 </body>
