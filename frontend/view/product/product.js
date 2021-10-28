@@ -31,6 +31,8 @@ fetch("http://localhost:3000/api/teddies/" + productId)
                     </div>
                         <button id="addToCart" type="submit" name="addToCart">Ajouter au panier</button>
                         </form>
+
+                        <div id="addProduct"></div>
                 </div>
             </div>
         `;
@@ -58,6 +60,13 @@ fetch("http://localhost:3000/api/teddies/" + productId)
     const cartButton = document.querySelector("#addToCart");
         cartButton.addEventListener("click", function(event) {
             event.preventDefault();
+            
+            // affichage d'un message comme quoi le produit est bien ajouté
+            document.querySelector("#addProduct").innerHTML = "Produit ajouté au panier";
+            //  fonction pour que le messsage disparaisse au bout de 2000ms
+            setTimeout(function() {
+                document.querySelector("#addProduct").innerHTML = "";
+              },2000);
 
             // récupération des valeurs du formulaire
             let productOptions = {
@@ -89,4 +98,5 @@ fetch("http://localhost:3000/api/teddies/" + productId)
                 addToLocalStorage();
             };
         });
+
 });
