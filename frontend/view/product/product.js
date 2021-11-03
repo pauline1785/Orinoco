@@ -1,16 +1,17 @@
 /* FICHE PRODUIT DE L ARTICLE CHOISI EN PAGE D ACCUEIL */
 
-//récupération de l'ID du produit dans l'URL
+// récupération de l'ID du produit dans l'URL
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const productId= urlParams.get("id");
 
-
+// appel de l'API
 fetch("http://localhost:3000/api/teddies/" + productId)
     .then(function(response) {
         let teddy = response.json();
         return teddy;
         })
+    // affichage du produit sur la page
     .then(function(teddy){
         let product = new Product(teddy);
         let productHtml = `
@@ -36,7 +37,7 @@ fetch("http://localhost:3000/api/teddies/" + productId)
                 </div>
             </div>
         `;
-                                                
+                                                    
         // adaptation des options couleurs au produit
         const colorChoices = product.colors;
         let colorOptions =  [];
@@ -46,7 +47,7 @@ fetch("http://localhost:3000/api/teddies/" + productId)
                 <option value="${j+1}">${colorChoices[j]}</option>
             `;
         }
-
+    
         // injection HTML dans la page produit
         document.querySelector(".container__product").innerHTML = productHtml;
         // injection des otpions couleurs dans le formulaire

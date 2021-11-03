@@ -1,4 +1,4 @@
-/* AFFICHAGE DE LA CONFIRMATION DE LA COMMANDE AVEC SON NUMERO */
+/* AFFICHAGE DE LA CONFIRMATION DE LA COMMANDE AVEC SON NUMERO ET LE PRIX TOTAL */
 
 // récupération de l'ID qui est dans le local storage
 let idInLocalStorage = localStorage.getItem("orderId");
